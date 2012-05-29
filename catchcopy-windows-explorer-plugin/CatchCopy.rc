@@ -1,0 +1,163 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+#include "Variable.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 0,0,0,9
+ PRODUCTVERSION 0,0,0,9
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904e4"
+        BEGIN
+            VALUE "CompanyName", "Catchcopy"
+	    #ifdef CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+	    VALUE "FileDescription", "CatchCopy Shell Extension (debug)"
+	    #else
+	    VALUE "FileDescription", "CatchCopy Shell Extension"
+	    #endif // CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+            VALUE "FileVersion", "0.0.0.9"
+	    #ifdef _M_X64
+		#ifdef CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+		VALUE "InternalName", "catchcopy64d.dll"
+		#else
+		VALUE "InternalName", "catchcopy64.dll"
+		#endif // CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+	    #else
+		#ifdef CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+		VALUE "InternalName", "catchcopy32d.dll"
+		#else
+		VALUE "InternalName", "catchcopy32.dll"
+		#endif // CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+	    #endif
+            VALUE "LegalCopyright", "GNU LGPL 3"
+	    #ifdef _M_X64
+		#ifdef CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+		VALUE "OriginalFilename", "catchcopy64d.dll"
+		#else
+		VALUE "OriginalFilename", "catchcopy64.dll"
+		#endif // CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+	    #else
+		#ifdef CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+		VALUE "OriginalFilename", "catchcopy32d.dll"
+		#else
+		VALUE "OriginalFilename", "catchcopy32.dll"
+		#endif // CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+	    #endif
+	    #ifdef CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+	    VALUE "ProductName", "CatchCopy (debug)"
+	    #else
+	    VALUE "ProductName", "CatchCopy"
+	    #endif // CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+            VALUE "ProductVersion", "0.0.0.9"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1252
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// REGISTRY
+//
+
+#ifndef _M_X64
+IDR_CATCHCOPY         REGISTRY                "CatchCopy.rgs"
+#else
+IDR_CATCHCOPY         REGISTRY                "CatchCopy64.rgs"
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_PROJNAME            "CatchCopy"
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+/////////////////////////////////////////////////////////////////////////////
+// French (France) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_FRA)
+#ifdef _WIN32
+LANGUAGE LANG_FRENCH, SUBLANG_FRENCH
+#pragma code_page(1252)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.\0"
+END
+
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // French (France) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

@@ -1,0 +1,423 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>571</width>
+    <height>805</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Test server catchcopy</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/main.png</normaloff>:/images/main.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="verticalLayout_5">
+    <item>
+     <widget class="QCheckBox" name="checkBoxAutoReply">
+      <property name="text">
+       <string>Auto-reply to the first protocol query</string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QGroupBox" name="groupBoxClients">
+        <property name="title">
+         <string>Clients</string>
+        </property>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QListWidget" name="listClient">
+           <property name="styleSheet">
+            <string notr="true">background-image: url(:/images/system-users.png);
+background-position	: center;
+background-repeat	: no-repeat;
+background-color	: #fff;
+background-attachment	: fixed;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="QToolButton" name="toolButton">
+             <property name="icon">
+              <iconset resource="resources.qrc">
+               <normaloff>:/images/list-remove-user.png</normaloff>:/images/list-remove-user.png</iconset>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="groupBox">
+        <property name="title">
+         <string>Error</string>
+        </property>
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <item>
+          <widget class="QListWidget" name="listError"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBoxQuery">
+      <layout class="QGridLayout" name="gridLayout_2">
+       <item row="0" column="1">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Command</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QListWidget" name="listCommandListSended">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-image: url(:/images/download.png);
+background-position	: center;
+background-repeat	: no-repeat;
+background-color	: #fff;
+background-attachment	: fixed;
+</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QListWidget" name="listCommand">
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>200</height>
+          </size>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">background-image: url(:/images/tools-report-bug.png);
+background-position	: center;
+background-repeat	: no-repeat;
+background-color	: #fff;
+background-attachment	: fixed;
+</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QLabel" name="labelQuery">
+         <property name="text">
+          <string>Query</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <widget class="QGroupBox" name="groupBoxReply">
+      <property name="title">
+       <string>Reply</string>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout_5">
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout">
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_3">
+           <item>
+            <widget class="QLabel" name="label_4">
+             <property name="text">
+              <string>Return code:</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QSpinBox" name="spinBoxReturnCode">
+             <property name="minimum">
+              <number>1000</number>
+             </property>
+             <property name="maximum">
+              <number>5999</number>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="horizontalSpacer">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <item>
+            <widget class="QLineEdit" name="lineEditRawSendText">
+             <property name="minimumSize">
+              <size>
+               <width>128</width>
+               <height>0</height>
+              </size>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="RawSendAdd">
+             <property name="text">
+              <string>+</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="RawSendRemove">
+             <property name="text">
+              <string>-</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <widget class="QListWidget" name="listRawSend">
+           <property name="styleSheet">
+            <string notr="true">background-image: url(:/images/upload.png);
+background-position	: center;
+background-repeat	: no-repeat;
+background-color	: #fff;
+background-attachment	: fixed;
+</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="sendRawList">
+           <property name="text">
+            <string>Send</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyProtocoSupported">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(43, 185, 0);</string>
+           </property>
+           <property name="text">
+            <string>Protocol supported</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyExtensionSupported">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(43, 185, 0);</string>
+           </property>
+           <property name="text">
+            <string>extension supported</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyExtensionNotSupported">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(43, 185, 0);</string>
+           </property>
+           <property name="text">
+            <string>extension not supported</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyClientRegistred">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(43, 185, 0);</string>
+           </property>
+           <property name="text">
+            <string>Client registered</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyServerName">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(43, 185, 0);</string>
+           </property>
+           <property name="text">
+            <string>Server name</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyCopyFinished">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(43, 185, 0);</string>
+           </property>
+           <property name="text">
+            <string>Copy finished</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyCopyFinishedWithError">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(43, 185, 0);</string>
+           </property>
+           <property name="text">
+            <string>Copy finished with error</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyCopyCanceled">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(43, 185, 0);</string>
+           </property>
+           <property name="text">
+            <string>Copy canceled</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyWrongArgListSize">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(220, 0, 0);</string>
+           </property>
+           <property name="text">
+            <string>Incorrect argument list size</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyWrongArg">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(220, 0, 0);</string>
+           </property>
+           <property name="text">
+            <string>Incorrect argument</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyProtocolNotSupported">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(220, 0, 0);</string>
+           </property>
+           <property name="text">
+            <string>Protocol not supported</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="pushButtonReplyUnknowOrder">
+           <property name="styleSheet">
+            <string notr="true">background-color: rgb(220, 0, 0);</string>
+           </property>
+           <property name="text">
+            <string>Unknow order</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="verticalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Vertical</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>20</width>
+             <height>40</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QToolBar" name="mainToolBar">
+   <property name="iconSize">
+    <size>
+     <width>48</width>
+     <height>48</height>
+    </size>
+   </property>
+   <property name="toolButtonStyle">
+    <enum>Qt::ToolButtonTextBesideIcon</enum>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionListen"/>
+   <addaction name="actionDisconnect"/>
+  </widget>
+  <widget class="QStatusBar" name="statusBar"/>
+  <action name="actionListen">
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/images/dialog-ok-apply.png</normaloff>:/images/dialog-ok-apply.png</iconset>
+   </property>
+   <property name="text">
+    <string>Listen</string>
+   </property>
+  </action>
+  <action name="actionDisconnect">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="resources.qrc">
+     <normaloff>:/images/process-stop.png</normaloff>:/images/process-stop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Disconnect</string>
+   </property>
+  </action>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
+ <connections/>
+</ui>
