@@ -7,7 +7,10 @@
 #include <stdio.h>
 
 #include "ClientCatchcopy.h"
+#include <WinSock.h>
+//#pragma comment(lib, "Ws2_32.lib")
 
+#undef NONBLOCK_FLAG
 ClientCatchcopy::ClientCatchcopy()
 {
 	m_hpipe=NULL;
@@ -122,6 +125,9 @@ bool ClientCatchcopy::connectToServer()
 				#endif // CATCHCOPY_EXPLORER_PLUGIN_DEBUG
 				return false;
 			}
+			#ifdef NONBLOCK_FLAG
+				return false;
+			#else
 			if (!WaitNamedPipeA(m_pipename, 10000))
 			{
 				#ifdef CATCHCOPY_EXPLORER_PLUGIN_DEBUG
@@ -140,11 +146,43 @@ bool ClientCatchcopy::connectToServer()
 				m_hpipe=NULL;
 				return false;
 			}
+			#endif
 		}
+
+		#ifdef NONBLOCK_FLAG
+		// The pipe connected; change to pipe_nowait mode. 
+		  DWORD dwMode;
+		  BOOL  fSuccess = FALSE; 
+		  dwMode = PIPE_READMODE_BYTE|PIPE_NOWAIT; 
+
+		   fSuccess = SetNamedPipeHandleState( 
+			  m_hpipe,    // pipe handle 
+			  &dwMode,  // new pipe mode 
+			  NULL,     // don't set maximum bytes 
+			  NULL);    // don't set maximum time 
+		   if ( ! fSuccess) 
+		   {
+			  #ifdef CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+			  char error_str[1024];
+			  sprintf(error_str, "SetNamedPipeHandleState failed. GLE=%d\n", ::GetLastError() ); 
+			  MessageBoxA( NULL, error_str,"SetNamedPipeHandleState error", MB_OK);
+			  #endif // CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+			  return false;
+		   }
+		#endif //NONBLOCK_FLAG
 	}
 	#ifdef CATCHCOPY_EXPLORER_PLUGIN_DEBUG
 	MessageBox(NULL,L"The explorer is now connected to the catchcopy compatible application",L"Checking", MB_OK);
 	#endif // CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+
+	bool f = sendProtocol();
+	if(f!=true)
+		return false;
+	#if defined(_M_X64)
+		setClientName(L"Windows Explorer 64Bits");
+	#else
+		setClientName(L"Windows Explorer 32Bits");
+	#endif
 	return true;
 }
 
@@ -254,6 +292,10 @@ int ClientCatchcopy::dataToPipe()
 			while (!ret && m_len)
 			{
 					max=(m_len>BUFFER_PIPE) ? BUFFER_PIPE:m_len;
+				#ifdef NONBLOCK_FLAG
+					writePipe_nonBlock(m_hpipe, ptr, max);
+					break;
+				#else
 					if(writePipe(m_hpipe, ptr, max)!=0)
 					{
 							ret=-2;
@@ -261,6 +303,7 @@ int ClientCatchcopy::dataToPipe()
 					}
 					m_len-=max;
 					ptr+=max;
+				#endif
 			}
 	}
         return ret;
@@ -273,6 +316,15 @@ int ClientCatchcopy::writePipe(HANDLE hPipe, byte_t *ptr, int len)
 		return -4;
 	return 0;
 }
+
+#ifdef NONBLOCK_FLAG
+int ClientCatchcopy::writePipe_nonBlock(HANDLE hPipe, byte_t *ptr, int len)
+{
+	DWORD cbWritten;
+	WriteFile(hPipe, ptr, len, &cbWritten, NULL);
+	return 0;
+}
+#endif
 
 // Add int32 (big-endian) into binary block
 int ClientCatchcopy::addInt32(int value)
@@ -339,6 +391,7 @@ void ClientCatchcopy::clear()
 {
 	m_tot=0;
 	m_len=0;
+	idNextOrder=0;
 	if (m_blk!=NULL)
 	{
 		free(m_blk);
@@ -354,10 +407,10 @@ bool ClientCatchcopy::isConnected()
 		bool fSuccess = PeekNamedPipe(
 	  m_hpipe,
 	  NULL,
-	  NULL,
-	  NULL,
-	  NULL,
-	  NULL
+	  0,
+	  0,
+	  0,
+	  0
 		);
 
 	if(!fSuccess && GetLastError() != ERROR_MORE_DATA)

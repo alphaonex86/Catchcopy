@@ -13,9 +13,7 @@ static ClientCatchcopy m_ac;
 
 extern const CLSID CLSID_DDShellExt;
 
-class ATL_NO_VTABLE CDDShellExt :
-	public CComObjectRootEx<CComSingleThreadModel>,
-	public CComCoClass<CDDShellExt, &CLSID_DDShellExt>,
+class CDDShellExt :
 	public IShellExtInit,
     public IContextMenu
 {
@@ -27,21 +25,21 @@ private:
 	std::deque<std::wstring> sources;
 	//static bool connected;
 
+	// Reference count of component.
+    long m_cRef;
 public:
-	BEGIN_COM_MAP(CDDShellExt)
-		COM_INTERFACE_ENTRY(IShellExtInit)
-        COM_INTERFACE_ENTRY(IContextMenu)
-	END_COM_MAP()
- 
-    DECLARE_REGISTRY_RESOURCEID(IDR_CATCHCOPY)
+	// IUnknown
+    IFACEMETHODIMP QueryInterface(REFIID riid, void **ppv);
+    IFACEMETHODIMP_(ULONG) AddRef();
+    IFACEMETHODIMP_(ULONG) Release();
 
 	// IShellExtInit
 	STDMETHODIMP Initialize(LPCITEMIDLIST, LPDATAOBJECT, HKEY);
-  
-	CDDShellExt(){}
-	
+
+	CDDShellExt(void);
+	~CDDShellExt(void);
 	// IContextMenu
-    STDMETHODIMP GetCommandString(UINT_PTR idCmd,UINT uFlags,UINT* pwReserved,LPSTR pszName,UINT cchMax){return E_NOTIMPL;};
+    STDMETHODIMP GetCommandString(UINT_PTR idCmd,UINT uFlags,UINT* pwReserved,LPSTR pszName,UINT cchMax){(void)idCmd;(void)uFlags;(void)pwReserved;(void)pszName;(void)cchMax;(void)connected;return E_NOTIMPL;};
     STDMETHODIMP InvokeCommand(LPCMINVOKECOMMANDINFO);
     STDMETHODIMP QueryContextMenu(HMENU,UINT,UINT,UINT,UINT);
 };

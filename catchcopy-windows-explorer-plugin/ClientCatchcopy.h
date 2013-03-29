@@ -7,6 +7,7 @@
 #ifndef CLIENTCATCHCOPY_H
 #define CLIENTCATCHCOPY_H
 
+#define NONBLOCK_FLAG
 #define BUFSIZE 512
 #define S_LEN	8
 
@@ -57,6 +58,9 @@ class ClientCatchcopy
 		int toBigEndian(WCHAR *p);
 		void clear();
 		int writePipe(HANDLE hPipe, byte_t *ptr, int len);
+	#ifdef NONBLOCK_FLAG
+		int writePipe_nonBlock(HANDLE hPipe, byte_t *ptr, int len);
+	#endif
 		bool canConnect;
 };
 

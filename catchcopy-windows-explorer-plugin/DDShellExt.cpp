@@ -1,17 +1,62 @@
 // DDShellExt.cpp : Implementation of CDDShellExt
 
-#include "stdafx.h"
+#include "tchar.h"
 #include "DDShellExt.h"
 #include "ClientCatchcopy.h"
 
-#ifndef _M_X64
-const CLSID CLSID_DDShellExt = {0x68D44A27,0xFFB6,0x4B89,{0xA3,0xE5,0x7B,0x0E,0x50,0xA7,0xAB,0x33}};
-#else
-const CLSID CLSID_DDShellExt = {0x68ff37c4,0x51bc,0x4c2a,{0xa9,0x92,0x7e,0x39,0xbc,0xe,0x70,0x6f}};
-#endif
+#include <Shlwapi.h>
+
+extern HINSTANCE g_hInst;
+extern long g_cDllRef;
+
+CDDShellExt::CDDShellExt(): m_cRef(1)
+{
+	InterlockedIncrement(&g_cDllRef);
+}
+
+CDDShellExt::~CDDShellExt()
+{
+    InterlockedDecrement(&g_cDllRef);
+}
+
+// Query to the interface the component supported.
+IFACEMETHODIMP CDDShellExt::QueryInterface(REFIID riid, void **ppv)
+{
+  if(riid == IID_IUnknown || riid == IID_IContextMenu)
+    {
+        *ppv = static_cast<IContextMenu*>(this);
+    }
+    else if (riid == IID_IShellExtInit)
+    {
+        *ppv = static_cast<IShellExtInit*>(this);
+    }
+    else
+    {
+        *ppv = NULL;
+        return E_NOINTERFACE;
+    }
+    reinterpret_cast<IUnknown*>(*ppv)->AddRef();
+    return S_OK;
+}
+
+// Increase the reference count for an interface on an object.
+IFACEMETHODIMP_(ULONG) CDDShellExt::AddRef()
+{
+    return InterlockedIncrement(&m_cRef);
+}
+
+// Decrease the reference count for an interface on an object.
+IFACEMETHODIMP_(ULONG) CDDShellExt::Release()
+{
+    ULONG cRef = InterlockedDecrement(&m_cRef);
+    if (0 == cRef)
+        delete this;
+    return cRef;
+}
 
 STDMETHODIMP CDDShellExt::Initialize(LPCITEMIDLIST pidlFolder,LPDATAOBJECT pDO,HKEY hProgID)
 {
+	(void)hProgID;
 	if(!connected)
 	{
 		bool b = m_ac.connectToServer();
@@ -19,14 +64,6 @@ STDMETHODIMP CDDShellExt::Initialize(LPCITEMIDLIST pidlFolder,LPDATAOBJECT pDO,H
 		if (b==true)
 		{
 			connected=true;
-			bool f = m_ac.sendProtocol();
-			if(f!=true)
-				return E_FAIL;
-			#if defined(_M_X64)
-				m_ac.setClientName(L"Windows Explorer 64Bits");
-			#else
-				m_ac.setClientName(L"Windows Explorer 32Bits");
-			#endif
 		}
 		else
 			return E_FAIL;
@@ -102,6 +139,7 @@ STDMETHODIMP CDDShellExt::Initialize(LPCITEMIDLIST pidlFolder,LPDATAOBJECT pDO,H
 
 STDMETHODIMP CDDShellExt::QueryContextMenu(HMENU hmenu,UINT uMenuIndex,UINT uidFirstCmd,UINT uidLastCmd,UINT uFlags)
 {
+	(void)uidLastCmd;
 	if(!m_ac.isConnected())
 	{
 		if(!m_ac.connectToServer())
@@ -112,18 +150,18 @@ STDMETHODIMP CDDShellExt::QueryContextMenu(HMENU hmenu,UINT uMenuIndex,UINT uidF
 
 	int x=uidFirstCmd;
 
-	InsertMenu(hmenu,uMenuIndex++,MF_STRING|MF_BYPOSITION,x++,_T("Copy"));
-	InsertMenu(hmenu,uMenuIndex++,MF_STRING|MF_BYPOSITION,x++,_T("Move"));
+    InsertMenu(hmenu,uMenuIndex++,MF_STRING|MF_BYPOSITION,x++,(const wchar_t*)_T("Copy-"));
+    InsertMenu(hmenu,uMenuIndex++,MF_STRING|MF_BYPOSITION,x++,(const wchar_t*)_T("Move-"));
 
 	int defItem=GetMenuDefaultItem(hmenu,false,0);
 	if (defItem==1) // 1: Copy
 	{
-		if (fFromExplorer) 
-			SetMenuDefaultItem(hmenu,uidFirstCmd+defItem-1,false);
+		if (fFromExplorer)
+			SetMenuDefaultItem(hmenu,uidFirstCmd,false);
 	}
-	else if (defItem==2)
+	else if (defItem==2) //2: Move
 	{
-		SetMenuDefaultItem(hmenu,uidFirstCmd+defItem-1,false);
+		SetMenuDefaultItem(hmenu,uidFirstCmd+1,false);
 	}
 	return MAKE_HRESULT(SEVERITY_SUCCESS,FACILITY_NULL,2);
 }
