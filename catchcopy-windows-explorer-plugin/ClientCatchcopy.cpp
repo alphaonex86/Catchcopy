@@ -204,63 +204,71 @@ void ClientCatchcopy::disconnectFromServer()
 /// \brief to send order
 bool ClientCatchcopy::sendProtocol()
 {
-	std::deque<std::wstring> data;
+	CDeque data;
 	data.push_back(L"protocol");
 	data.push_back(L"0002");
 	return sendRawOrderList(data);
 }
 
-bool ClientCatchcopy::setClientName(const std::wstring & name)
+bool ClientCatchcopy::setClientName(wchar_t *name)
 {
-	std::deque<std::wstring> data;
+	CDeque data;
 	data.push_back(L"client");
 	data.push_back(name);
 	return sendRawOrderList(data);
 }
 
-bool ClientCatchcopy::addCopyWithDestination(std::deque<std::wstring> sources,const std::wstring & destination)
+bool ClientCatchcopy::addCopyWithDestination(CDeque sources,wchar_t *destination)
 {
 	sources.push_front(L"cp");
 	sources.push_back(destination);
 	return sendRawOrderList(sources);
 }
 
-bool ClientCatchcopy::addCopyWithoutDestination(std::deque<std::wstring> sources)
+bool ClientCatchcopy::addCopyWithoutDestination(CDeque sources)
 {
 	sources.push_front(L"cp-?");
 	return sendRawOrderList(sources);
 }
 
-bool ClientCatchcopy::addMoveWithDestination(std::deque<std::wstring> sources,const std::wstring & destination)
+bool ClientCatchcopy::addMoveWithDestination(CDeque sources, wchar_t *destination)
 {
 	sources.push_front(L"mv");
 	sources.push_back(destination);
 	return sendRawOrderList(sources);
 }
 
-bool ClientCatchcopy::addMoveWithoutDestination(std::deque<std::wstring> sources)
+bool ClientCatchcopy::addMoveWithoutDestination(CDeque sources)
 {
 	sources.push_front(L"mv-?");
 	return sendRawOrderList(sources);
 }
 
 /// \brief to send stream of string list
-bool ClientCatchcopy::sendRawOrderList(const std::deque<std::wstring> & order,const bool & first_try)
+bool ClientCatchcopy::sendRawOrderList(CDeque order, bool first_try)
 {
 	if(m_hpipe!=NULL)
 	{
 		int data_size=sizeof(int)*3;
-		for(unsigned int i=0;i<order.size();i++)
+		for(int i=0;i<order.size();i++)
 		{
+			if (order.at(i) == NULL)
+				continue;
+
 			data_size+=(int)sizeof(int);
-			data_size+=(int)sizeof(wchar_t)*(int)order.at(i).size();
+			data_size+=(int)sizeof(wchar_t)*(int)wcslen(order.at(i));
 		}
 		addInt32(data_size);
 		addInt32(idNextOrder++);
 		addInt32((int)order.size());
-		for(unsigned int i=0;i<order.size();i++)
+		for(int i=0;i<order.size();i++)
+		{
+			if (order.at(i) == NULL)
+				continue;
+
 			//set string contenant
-			addStr((WCHAR*)order.at(i).c_str());
+			addStr(order.at(i));
+		}
 		if(dataToPipe()<0)
 		{
 			if(first_try)

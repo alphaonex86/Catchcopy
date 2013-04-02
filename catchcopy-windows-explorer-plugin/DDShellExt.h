@@ -5,6 +5,7 @@
 #include "shlobj.h"
 #include "ClientCatchcopy.h"
 #include "Variable.h"
+#include "Deque.h"
 
 static bool connected=false;
 static ClientCatchcopy m_ac;
@@ -22,7 +23,7 @@ private:
 	bool fFromExplorer;
 	WCHAR fDestDir[MAX_PATH];
 	//static ClientCatchcopy m_ac;
-	std::deque<std::wstring> sources;
+	CDeque sources;	
 	//static bool connected;
 
 	// Reference count of component.

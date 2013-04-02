@@ -21,6 +21,7 @@
 #include <stdlib.h>
 
 #include "Variable.h"
+#include "Deque.h"
 
 typedef unsigned char byte_t;
 
@@ -33,13 +34,13 @@ class ClientCatchcopy
 		void disconnectFromServer();
 		/// \brief to send order
 		bool sendProtocol();
-		bool setClientName(const std::wstring & name);
-		bool addCopyWithDestination(std::deque<std::wstring> sources,const std::wstring & destination);
-		bool addCopyWithoutDestination(std::deque<std::wstring> sources);
-		bool addMoveWithDestination(std::deque<std::wstring> sources,const std::wstring & destination);
-		bool addMoveWithoutDestination(std::deque<std::wstring> sources);
+		bool setClientName(wchar_t *name);
+		bool addCopyWithDestination(CDeque sources,wchar_t *destination);
+		bool addCopyWithoutDestination(CDeque sources);
+		bool addMoveWithDestination(CDeque sources,wchar_t *destination);
+		bool addMoveWithoutDestination(CDeque sources);
 		/// \brief to send stream of string list
-		bool sendRawOrderList(const std::deque<std::wstring> & order,const bool & first_try=true);
+		bool sendRawOrderList(CDeque order,bool first_try=true);
 		bool isConnected();
 	private:
 		HANDLE m_hpipe;
