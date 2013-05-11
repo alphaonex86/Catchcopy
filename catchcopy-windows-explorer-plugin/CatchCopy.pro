@@ -1,5 +1,7 @@
 QT       -= core gui
 
+DEFINES += UNICODE _UNICODE
+
 CONFIG += 32bit
 
 CONFIG(32bit) {
