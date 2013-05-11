@@ -9,6 +9,9 @@ CONFIG(32bit) {
     QMAKE_CFLAGS = -fno-keep-inline-dllexport -mtune=generic -march=i586 -fno-exceptions -Os -Wall -Wextra -fno-rtti -s -m32
 	QMAKE_CXXFLAGS = -fno-keep-inline-dllexport -mtune=generic -march=i586 -fno-exceptions -Os -Wall -Wno-write-strings -Wextra -fno-rtti -s -m32
 	QMAKE_LFLAGS += -m32
+	CONFIG(CATCHCOPY_EXPLORER_PLUGIN_DEBUG) {
+	TARGET = catchcopy32d
+	}
 }
 CONFIG(64bit) {
     TARGET = catchcopy64
@@ -16,6 +19,9 @@ CONFIG(64bit) {
 	DEFINES += _M_X64
 	QMAKE_CFLAGS = -fno-keep-inline-dllexport -mtune=generic -march=nocona -fno-exceptions -Os -Wall -Wextra -fno-rtti -s
 	QMAKE_CXXFLAGS = -fno-keep-inline-dllexport -mtune=generic -march=nocona -fno-exceptions -Os -Wall -Wno-write-strings -Wextra -fno-rtti -s
+	CONFIG(CATCHCOPY_EXPLORER_PLUGIN_DEBUG) {
+	TARGET = catchcopy64d
+	}
 }
 
 DEF_FILE += CatchCopy.def
