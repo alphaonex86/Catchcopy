@@ -150,8 +150,8 @@ STDMETHODIMP CDDShellExt::QueryContextMenu(HMENU hmenu,UINT uMenuIndex,UINT uidF
 
 	int x=uidFirstCmd;
 
-    InsertMenu(hmenu,uMenuIndex++,MF_STRING|MF_BYPOSITION,x++,_T("Copy-"));
-    InsertMenu(hmenu,uMenuIndex++,MF_STRING|MF_BYPOSITION,x++,_T("Move-"));
+	InsertMenu(hmenu,uMenuIndex++,MF_STRING|MF_BYPOSITION,x++,_T("Copy - Ultracopier"));
+	InsertMenu(hmenu,uMenuIndex++,MF_STRING|MF_BYPOSITION,x++,_T("Move - Ultracopier"));
 
 	int defItem=GetMenuDefaultItem(hmenu,false,0);
 	if (defItem==1) // 1: Copy
