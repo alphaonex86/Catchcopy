@@ -1,51 +1,33 @@
 QT       -= core gui
 
-DEFINES += UNICODE _UNICODE
+CONFIG += 32bit
+CONFIG -= exceptions rtti
 
-CONFIG += MSVC64bit
+#DEFINES += CATCHCOPY_EXPLORER_PLUGIN_DEBUG
 
 CONFIG(32bit) {
     TARGET = catchcopy32
-    QMAKE_CFLAGS = -fno-keep-inline-dllexport -mtune=generic -march=i586 -fno-exceptions -Os -Wall -Wextra -fno-rtti -s -m32 -static-libgcc -static-libstdc++ -static
-	QMAKE_CXXFLAGS = -fno-keep-inline-dllexport -mtune=generic -march=i586 -fno-exceptions -Os -Wall -Wno-write-strings -Wextra -fno-rtti -s -m32 -static-libgcc -static-libstdc++ -static
-	QMAKE_LFLAGS += -m32 -static-libgcc -static-libstdc++ -fno-exceptions -static
-	QMAKE_CXXFLAGS -= -fexceptions -O2
-	CONFIG(CATCHCOPY_EXPLORER_PLUGIN_DEBUG) {
-	TARGET = catchcopy32d
-	}
+    QMAKE_CFLAGS =  -march=i586 -m32
+        QMAKE_CXXFLAGS = -march=i586 -m32
+        QMAKE_LFLAGS += -m32
 }
 CONFIG(64bit) {
     TARGET = catchcopy64
+    LIBS += -LC:\x86_64-4.9.3-release-win32-seh-rt_v4-rev1\mingw64\lib64
 	DEFINES += _M_X64
-	QMAKE_CFLAGS = -fno-keep-inline-dllexport -mtune=generic -march=nocona -fno-exceptions -Os -Wall -Wextra -fno-rtti -s -m64 -static-libgcc -static-libstdc++ -static
-	QMAKE_CXXFLAGS = -fno-keep-inline-dllexport -mtune=generic -march=nocona -fno-exceptions -Os -Wall -fno-rtti -s -m64 -static-libgcc -static-libstdc++ -static
-	QMAKE_LFLAGS += -m64 -static-libgcc -static-libstdc++ -fno-exceptions -static
-	QMAKE_CXXFLAGS -= -fexceptions -O2
-	CONFIG(CATCHCOPY_EXPLORER_PLUGIN_DEBUG) {
-	TARGET = catchcopy64d
-	}
+        QMAKE_CFLAGS = -m64
+        QMAKE_CXXFLAGS = -m64
+        QMAKE_LFLAGS += -m64
 }
 
-CONFIG(MSVC32bit) {
-    TARGET = catchcopy32
-    QMAKE_CFLAGS = -Wall
-	QMAKE_CXXFLAGS = -Wall
-	CONFIG(CATCHCOPY_EXPLORER_PLUGIN_DEBUG) {
-	TARGET = catchcopy32d
-	}
-}
-CONFIG(MSVC64bit) {
-    TARGET = catchcopy64
-	QMAKE_CFLAGS = -Wall
-	QMAKE_CXXFLAGS = -Wall
-	CONFIG(CATCHCOPY_EXPLORER_PLUGIN_DEBUG) {
-	TARGET = catchcopy64d
-	}
-}
+QMAKE_CFLAGS -= -fexceptions -mthreads -O2
+QMAKE_CXXFLAGS -= -fexceptions -mthreads -O2
+QMAKE_CFLAGS += -std=c++98 -fno-keep-inline-dllexport -mtune=generic -fno-exceptions -Os -Wall -Wextra -fno-rtti -s
+QMAKE_CXXFLAGS += -std=c++98 -fno-keep-inline-dllexport -mtune=generic -fno-exceptions -Os -Wall -Wno-write-strings -Wextra -fno-rtti -s
 
 DEF_FILE += CatchCopy.def
 
-LIBS+= -lws2_32 -lole32 -luuid -ladvapi32 -lshell32 -luser32
+LIBS+= -lws2_32 -lole32 -luuid -static-libstdc++ -static-libgcc
 
 TEMPLATE = lib
 

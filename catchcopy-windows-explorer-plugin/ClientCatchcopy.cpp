@@ -178,11 +178,11 @@ bool ClientCatchcopy::connectToServer()
 	bool f = sendProtocol();
 	if(f!=true)
 		return false;
-#if defined(_M_X64) || defined(_WIN64)
+	#if defined(_M_X64)
 		setClientName(L"Windows Explorer 64Bits");
-#else
+	#else
 		setClientName(L"Windows Explorer 32Bits");
-#endif
+	#endif
 	return true;
 }
 

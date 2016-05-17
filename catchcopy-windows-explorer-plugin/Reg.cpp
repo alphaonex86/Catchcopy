@@ -26,7 +26,13 @@ HRESULT SetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName,
 
     // Creates the specified registry key. If the key already exists, the
     // function opens it.
-    hr = HRESULT_FROM_WIN32(RegCreateKeyEx(HKEY_CLASSES_ROOT, pszSubKey, 0,
+    hr = HRESULT_FROM_WIN32(RegCreateKeyEx(
+                            #ifdef CATCHCOPY_ROOT_MODE
+                                HKEY_CLASSES_ROOT
+                            #else
+                                HKEY_CURRENT_USER
+                            #endif
+                                , pszSubKey, 0,
         NULL, REG_OPTION_NON_VOLATILE, KEY_ALL_ACCESS | KEY_WOW64_64KEY, NULL, &hKey, NULL));
     
     if (SUCCEEDED(hr))
@@ -107,7 +113,13 @@ HRESULT GetHKCRRegistryKeyAndValue(PCWSTR pszSubKey, PCWSTR pszValueName,
     HKEY hKey = NULL;
 
     // Try to open the specified registry key.
-    hr = HRESULT_FROM_WIN32(RegOpenKeyEx(HKEY_CLASSES_ROOT, pszSubKey, 0,
+    hr = HRESULT_FROM_WIN32(RegOpenKeyEx(
+                            #ifdef CATCHCOPY_ROOT_MODE
+                                HKEY_CLASSES_ROOT
+                            #else
+                                HKEY_CURRENT_USER
+                            #endif
+                                , pszSubKey, 0,
         KEY_READ, &hKey));
 
     if (SUCCEEDED(hr))
@@ -164,7 +176,13 @@ HRESULT RegisterInprocServer(PCWSTR pszModule, const CLSID& clsid, PCWSTR pszFri
     wchar_t szSubkey[MAX_PATH];
 
     // Create the HKCR\CLSID\{<CLSID>} key.
-    hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), L"CLSID\\%s", szCLSID);
+    hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey),
+                     #ifdef CATCHCOPY_ROOT_MODE
+                         L"CLSID\\%s"
+                     #else
+                         L"Software\\Classes\\CLSID\\%s"
+                     #endif
+                         , szCLSID);
     if (SUCCEEDED(hr))
     {
         hr = SetHKCRRegistryKeyAndValue(szSubkey, NULL, pszFriendlyName);
@@ -172,7 +190,13 @@ HRESULT RegisterInprocServer(PCWSTR pszModule, const CLSID& clsid, PCWSTR pszFri
         // Create the HKCR\CLSID\{<CLSID>}\InprocServer32 key.
         if (SUCCEEDED(hr))
         {
-            hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), L"CLSID\\%s\\InprocServer32", szCLSID);
+            hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey),
+                     #ifdef CATCHCOPY_ROOT_MODE
+                         L"CLSID\\%s\\InprocServer32"
+                     #else
+                         L"Software\\Classes\\CLSID\\%s\\InprocServer32"
+                     #endif
+                                 , szCLSID);
             if (SUCCEEDED(hr))
             {
                 // Set the default value of the InprocServer32 key to the
@@ -211,11 +235,23 @@ HRESULT UnregisterInprocServer(const CLSID& clsid)
     wchar_t szSubkey[MAX_PATH];
 
     // Delete the HKCR\CLSID\{<CLSID>} key.
-    hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), L"CLSID\\%s", szCLSID);
+    hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey),
+                     #ifdef CATCHCOPY_ROOT_MODE
+                         L"CLSID\\%s"
+                     #else
+                         L"Software\\Classes\\CLSID\\%s"
+                     #endif
+                         , szCLSID);
 
 	if (SUCCEEDED(hr))
     {
-        hr = HRESULT_FROM_WIN32(RecursiveDeleteKey(HKEY_CLASSES_ROOT, szSubkey));
+        hr = HRESULT_FROM_WIN32(RecursiveDeleteKey(
+                            #ifdef CATCHCOPY_ROOT_MODE
+                                HKEY_CLASSES_ROOT
+                            #else
+                                HKEY_CURRENT_USER
+                            #endif
+                                    , szSubkey));
     }
 
     return hr;
@@ -281,7 +317,13 @@ HRESULT RegisterShellExtContextMenuHandler(
     }
 
     // Create the key HKCR\<File Type>\shellex\DragDropHandlers\{<CLSID>}
-    hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), L"%s\\shellex\\DragDropHandlers\\%s", pszFileType, szCLSID);
+    hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey),
+                     #ifdef CATCHCOPY_ROOT_MODE
+                         L"%s\\shellex\\DragDropHandlers\\%s"
+                     #else
+                         L"Software\\Classes\\%s\\shellex\\DragDropHandlers\\%s"
+                     #endif
+                         , pszFileType, szCLSID);
     if (SUCCEEDED(hr))
     {
         // Set the default value of the key.
@@ -339,10 +381,22 @@ HRESULT UnregisterShellExtContextMenuHandler(
     }
 
     // Remove the HKCR\<File Type>\shellex\DragDropHandlers\{<CLSID>} key.
-    hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey), L"%s\\shellex\\DragDropHandlers\\%s", pszFileType, szCLSID);
+    hr = StringCchPrintf(szSubkey, ARRAYSIZE(szSubkey),
+                     #ifdef CATCHCOPY_ROOT_MODE
+                         L"%s\\shellex\\DragDropHandlers\\%s"
+                     #else
+                         L"Software\\Classes\\%s\\shellex\\DragDropHandlers\\%s"
+                     #endif
+                         , pszFileType, szCLSID);
     if (SUCCEEDED(hr))
     {
-        hr = HRESULT_FROM_WIN32(RecursiveDeleteKey(HKEY_CLASSES_ROOT, szSubkey));
+        hr = HRESULT_FROM_WIN32(RecursiveDeleteKey(
+                            #ifdef CATCHCOPY_ROOT_MODE
+                                HKEY_CLASSES_ROOT
+                            #else
+                                HKEY_CURRENT_USER
+                            #endif
+                                    , szSubkey));
     }
 
     return hr;

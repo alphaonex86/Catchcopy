@@ -2,6 +2,8 @@
 #define _REG_H_
 #pragma once
 
+//#define CATCHCOPY_ROOT_MODE
+
 #include <windows.h>
 #include <winreg.h>
 //

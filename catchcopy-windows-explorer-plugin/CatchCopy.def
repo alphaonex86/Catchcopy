@@ -1,7 +1,7 @@
 LIBRARY      "CatchCopy.DLL"
 
 EXPORTS
-    DllGetClassObject   = DllGetClassObject PRIVATE
-    DllCanUnloadNow     = DllCanUnloadNow PRIVATE
-    DllRegisterServer   = DllRegisterServer PRIVATE
-    DllUnregisterServer = DllUnregisterServer PRIVATE
+    DllGetClassObject   = DllGetClassObject@12
+    DllCanUnloadNow     = DllCanUnloadNow@0
+    DllRegisterServer   = DllRegisterServer@0
+    DllUnregisterServer = DllUnregisterServer@0
