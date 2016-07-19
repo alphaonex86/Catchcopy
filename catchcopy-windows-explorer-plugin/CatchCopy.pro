@@ -1,6 +1,6 @@
 QT       -= core gui
 
-CONFIG += 32bit
+CONFIG += 64bit
 CONFIG -= exceptions rtti
 
 #DEFINES += CATCHCOPY_EXPLORER_PLUGIN_DEBUG
@@ -14,7 +14,7 @@ CONFIG(32bit) {
 CONFIG(64bit) {
     TARGET = catchcopy64
     LIBS += -LC:\x86_64-4.9.3-release-win32-seh-rt_v4-rev1\mingw64\lib64
-	DEFINES += _M_X64
+        DEFINES += _M_X64
         QMAKE_CFLAGS = -m64
         QMAKE_CXXFLAGS = -m64
         QMAKE_LFLAGS += -m64
@@ -22,12 +22,12 @@ CONFIG(64bit) {
 
 QMAKE_CFLAGS -= -fexceptions -mthreads -O2
 QMAKE_CXXFLAGS -= -fexceptions -mthreads -O2
-QMAKE_CFLAGS += -std=c++98 -fno-keep-inline-dllexport -mtune=generic -fno-exceptions -Os -Wall -Wextra -fno-rtti -s
-QMAKE_CXXFLAGS += -std=c++98 -fno-keep-inline-dllexport -mtune=generic -fno-exceptions -Os -Wall -Wno-write-strings -Wextra -fno-rtti -s
+QMAKE_CFLAGS += -std=c++98 -fno-keep-inline-dllexport -mtune=generic -fno-exceptions -Os -Wall -Wextra -fno-rtti -s -static -static-libgcc -static-libstdc++
+QMAKE_CXXFLAGS += -std=c++98 -fno-keep-inline-dllexport -mtune=generic -fno-exceptions -Os -Wall -Wno-write-strings -Wextra -fno-rtti -s -static -static-libgcc -static-libstdc++
 
 DEF_FILE += CatchCopy.def
 
-LIBS+= -lws2_32 -lole32 -luuid -static-libstdc++ -static-libgcc
+LIBS+= -lws2_32 -lole32 -luuid -static-libstdc++ -static-libgcc -static
 
 TEMPLATE = lib
 
