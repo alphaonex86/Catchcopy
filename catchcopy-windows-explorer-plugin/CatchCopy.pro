@@ -3,7 +3,7 @@ QT       -= core gui
 CONFIG += 64bit
 CONFIG -= exceptions rtti
 
-DEFINES += CATCHCOPY_EXPLORER_PLUGIN_DEBUG
+#DEFINES += CATCHCOPY_EXPLORER_PLUGIN_DEBUG
 
 CONFIG(32bit) {
     TARGET = catchcopy32
